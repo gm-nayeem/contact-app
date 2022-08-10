@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Apps</title>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.3.0/mdb.min.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="my-4">
+            <h4>Create New Contacts</h4>
+            <form action="/contacts" method="post" id="my-form">
+                <div class="row mb-4">
+                    <div class="col">
+                        <div class="form-outline">
+                            <input type="text" id="form3Example1" name="name" class="form-control <%= error.name ? 'is-invalid' : '' %>"/>
+                            <label class="form-label" for="form3Example1">name</label>
+                            <div class="invalid-feedback">
+                                <%= error.name %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-outline">
+                            <input type="text" id="form3Example2" name="phone" class="form-control <%= error.phone ? 'is-invalid' : '' %>" />
+                            <label class="form-label" for="form3Example2">phone</label>
+                            <div class="invalid-feedback">
+                                <%= error.phone %>
+                            </div>                          
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-outline">
+                            <input type="email" id="form3Example3" name="email" class="form-control <%= error.email ? 'is-invalid' : '' %>" />
+                            <label class="form-label" for="form3Example3">email</label>
+                            <div class="invalid-feedback">
+                                <%= error.email %>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <input type="hidden" name="id">
+                    </div>
+                    <div>
+                        <input type="submit" value="Add Contact" class="btn btn-primary mt-3">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div>
+            <h4>Your Contacts</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(let contact of contacts){ %>
+                        <tr>
+                            <td>
+                                <%= contact.name %>
+                            </td>
+                            <td>
+                                <%= contact.phone %>
+                            </td>
+                            <td>
+                                <%= contact.email %>
+                            </td>
+                            <td>
+                                <button 
+                                    class="btn btn-warning btn-sm edit-btn"
+                                    data-name=" <%= contact.name %>"
+                                    data-phone=" <%= contact.phone %>"
+                                    data-email=" <%= contact.email %>"
+                                    data-id=" <%= contact._id %>"
+                                >                               
+                                    Edit
+                                </button>
+                                <a href="/contacts/delete/<%= contact._id %>" class="btn btn-danger btn-sm">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                        <% } %>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+    <!-- Bootstrap js, jquery, popper  -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.3.0/mdb.min.js"></script>
+
+    <script>
+        window.onload = function(){
+            let editBtn = document.getElementsByClassName('edit-btn');
+            let form = document.getElementById('my-form');
+
+            [...editBtn].forEach(btn => {
+                btn.addEventListener('click', (e)=> {
+                    const {name, phone, email, id} = e.target.dataset;
+                    form[0].value = name;
+                    form[1].value = phone;
+                    form[2].value = email;
+                    form[3].value = id;
+                    form[4].value = 'Update Contact';
+                })
+            })
+        }
+    </script>
+
+</body>
+
+</html>
